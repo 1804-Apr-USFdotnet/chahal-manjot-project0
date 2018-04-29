@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RestaurantReviewsLibrary;
+using RestaurantReviewsLibrary.Models;
 
 namespace RestaurantReviewsClient
 {
@@ -11,22 +12,37 @@ namespace RestaurantReviewsClient
     {
         static void Main(string[] args)
         {
-            ////////////////////////////////////////////////////////////////////////
-            //Deserialization of JSON data
+            var libHelper = new LibraryHelper();
 
-            RestaurantCollection myCollection2 = new RestaurantCollection();
+            var results = libHelper.GetRestaurants();
+            Console.WriteLine("All restaurants:");
+            foreach (var restuarant in results)
+                //Console.WriteLine(restuarant.GetRestaurantInfo());
+                Console.WriteLine(restuarant.Name);
+            Console.WriteLine();
 
-            myCollection2.DeserializeRestaurantData();
-            myCollection2.DeserializeReviewData();
+            //var results2 = libHelper.GetReviews("Subway");
+            //foreach (var review in results2)
+            //    Console.WriteLine(review.GetReview());
 
-            myCollection2.GetRestaurants();
+            //libHelper.AddRestaurant("Chipotles", "2576 East Fowler Avenue", "123-456-1234");
+            //libHelper.RemoveRestaurant("Chipotle");
+            //libHelper.UpdateRestaurant("Chipotles", "Chipotle");
 
-            myCollection2.GetReviews("Subway");
-            myCollection2.GetReviews("Wingstop");
-            myCollection2.GetReviews("Qdoba");
+            results = libHelper.Search("in");
+            Console.WriteLine("Search results for \"in\":");
+            foreach (var restuarant in results)
+                Console.WriteLine(restuarant.Name);
+            Console.WriteLine();
 
-            myCollection2.Search("Wingstop");
-            myCollection2.Search("in");
+            results = libHelper.GetRestaurantsAlphabetical();
+            Console.WriteLine("All restaurants sorted by name:");
+            foreach (var restuarant in results)
+                Console.WriteLine(restuarant.Name);
+
+            //results = libHelper.GetRestaurants();
+            //foreach (var restuarant in results)
+            //    Console.WriteLine(restuarant.Name);
 
             Console.Read();
         }

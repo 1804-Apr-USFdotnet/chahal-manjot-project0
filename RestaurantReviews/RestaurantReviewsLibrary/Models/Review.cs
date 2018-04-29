@@ -8,14 +8,16 @@ namespace RestaurantReviewsLibrary
 {
     public class Review
     {
-        int id;
-        internal int Rating { get;}
-        string review;
-        string user;
-        string date;
-        internal int Restaurantid { get;}
+        public int id;
+        public int Rating { get; set; }
+        public string review;
+        public string user;
+        public DateTime date;
+        public int Restaurantid { get; set; }
 
-        public Review(int id, string user, string review, int rating, string date, int restaurantid)
+        public Review() { }
+
+        public Review(int id, string user, string review, int rating, DateTime date, int restaurantid)
         {
             this.id = id;
             this.user = user;

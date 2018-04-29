@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{98B47C1B-6CFC-4778-BB67-F0AC9BB7E9B8}</ProjectGuid>
+    <ProjectGuid>{0EE128DE-00A3-4330-99C5-F6CD801EAE14}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RestaurantReviewsLibrary</RootNamespace>
-    <AssemblyName>RestaurantReviewsLibrary</AssemblyName>
+    <RootNamespace>RestaurantReviewsData</RootNamespace>
+    <AssemblyName>RestaurantReviewsData</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -36,14 +36,11 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,27 +49,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LibraryHelper.cs" />
-    <Compile Include="Models\RestaurantCollection.cs" />
-    <Compile Include="Serialization\DeserializeRestaurants.cs" />
-    <Compile Include="Serialization\DeserializeReviews.cs" />
-    <Compile Include="Repositories\IRepository.cs" />
-    <Compile Include="Repositories\IRestaurantRepository.cs" />
-    <Compile Include="Repositories\RestaurantRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\Restaurant.cs" />
-    <Compile Include="Models\Review.cs" />
-    <Compile Include="Serialization\SerializeRestaurants.cs" />
+    <Compile Include="DataModels\Restaurant.cs" />
+    <Compile Include="RestaurantReviewsEntities.cs" />
+    <Compile Include="DataModels\Review.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RestaurantReviewsData\RestaurantReviewsData.csproj">
-      <Project>{0ee128de-00a3-4330-99c5-f6cd801eae14}</Project>
-      <Name>RestaurantReviewsData</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

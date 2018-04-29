@@ -10,17 +10,19 @@ namespace RestaurantReviewsLibrary
     public class Restaurant
     {
         [JsonProperty (PropertyName = "id")]
-        internal int ID { get;}
+        public int ID { get; set; }
         [JsonProperty(PropertyName = "name")]
-        internal string Name { get;}
+        public string Name { get; set; }
         [JsonProperty(PropertyName = "address")]
-        internal string Address {get;}
+        public string Address { get; set; }
         [JsonProperty(PropertyName = "phone")]
-        internal string Phone { get;}
+        public string Phone { get; set; }
 
-        List<Review> reviews;
+        public List<Review> reviews;
         int reviewCount;
         internal decimal AverageRating { get; set; }
+
+        public Restaurant() { }
 
         public Restaurant(int id, string name, string address, string phone)
         {
@@ -51,7 +53,7 @@ namespace RestaurantReviewsLibrary
         public string SearchInfo()
         {
             //string a = $"{id}\n{Name}\n{address}\n{phone}\n{AverageRating}";
-            string a = $"{Name}\n{Address}\n{Phone}\n{AverageRating}";
+            string a = $"{Name}\n{Address}\n{Phone}\n{AverageRating.ToString("0.##")}";
             return a;
         }
 
@@ -60,7 +62,7 @@ namespace RestaurantReviewsLibrary
             //string a = "Name: " + this.name + "\nAddress: " + this.address + "\nPhone: " + this.phone + "\nRating: " + averageRating;
             //string a = $"Name: {name}\nAddress: {address}\nPhone: {phone}\nRating: {averageRating}";
             //string a = $"ID: {id}\nname: {name}\nAddress: {address}\nPhone: {phone}\nRating: {AverageRating}";
-            string a = $"Name: {Name}\nAddress: {Address}\nPhone: {Phone}\nRating: {AverageRating}";
+            string a = $"Name: {Name}\nAddress: {Address}\nPhone: {Phone}\nRating: {AverageRating.ToString("0.##")}";
             return a;
         }
 
