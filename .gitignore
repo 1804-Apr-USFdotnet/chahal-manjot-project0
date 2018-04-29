@@ -340,6 +340,10 @@ Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
+.\RestaurantReviews\RestaurantReviewsClient\bin\Debug\connections.config
+.\RestaurantReviews\RestaurantReviewsData\bin\Debug\connections.config
+
+
 # Windows Installer files
 *.cab
 *.msi
