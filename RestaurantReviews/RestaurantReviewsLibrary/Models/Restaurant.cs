@@ -20,7 +20,7 @@ namespace RestaurantReviewsLibrary
 
         public List<Review> reviews;
         int reviewCount;
-        internal decimal AverageRating { get; set; }
+        public double AverageRating { get; set; }
 
         public Restaurant() { }
 

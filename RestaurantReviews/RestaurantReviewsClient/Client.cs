@@ -15,11 +15,11 @@ namespace RestaurantReviewsClient
             var libHelper = new LibraryHelper();
 
             var results = libHelper.GetRestaurants();
-            Console.WriteLine("All restaurants:");
-            foreach (var restuarant in results)
-                //Console.WriteLine(restuarant.GetRestaurantInfo());
-                Console.WriteLine(restuarant.Name);
-            Console.WriteLine();
+            //Console.WriteLine("All restaurants:");
+            //foreach (var restuarant in results)
+            //    Console.WriteLine(restuarant.GetRestaurantInfo());
+            //    Console.WriteLine(restuarant.Name);
+            //Console.WriteLine();
 
             //var results2 = libHelper.GetReviews("Subway");
             //foreach (var review in results2)
@@ -36,9 +36,28 @@ namespace RestaurantReviewsClient
             Console.WriteLine();
 
             results = libHelper.GetRestaurantsAlphabetical();
-            Console.WriteLine("All restaurants sorted by name:");
+            Console.WriteLine("Name                Rating");
+            Console.WriteLine("--------------------------");
             foreach (var restuarant in results)
-                Console.WriteLine(restuarant.Name);
+                Console.WriteLine(restuarant.Name + " ".PadLeft(20 - restuarant.Name.Length, ' ') + restuarant.AverageRating);
+            Console.WriteLine();
+
+            results = libHelper.GetRestaurantsByRating();
+            Console.WriteLine("Name                Rating");
+            Console.WriteLine("--------------------------");
+            foreach (var restuarant in results)
+                Console.WriteLine(restuarant.Name+" ".PadLeft(20-restuarant.Name.Length,' ')+restuarant.AverageRating);
+            Console.WriteLine();
+
+            results = libHelper.GetTop3RestaurantsByRating();
+            Console.WriteLine("Top 3 rated restaurants:");
+            foreach (var restuarant in results)
+                Console.WriteLine(restuarant.GetRestaurantInfo()+"\n");
+            Console.WriteLine();
+
+            var results3 = libHelper.GetDetails("Subway");
+            Console.WriteLine("Details:");
+            Console.WriteLine(results3.GetRestaurantInfo());
 
             //results = libHelper.GetRestaurants();
             //foreach (var restuarant in results)

@@ -31,19 +31,48 @@ namespace RestaurantReviewsLibrary.Models
             return result;
         }
 
+        public IEnumerable<Restaurant> GetRestaurantsByRating()
+        {
+            IEnumerable<Restaurant> result;
+            using (var db = new RestaurantReviewsEntities())
+            {
+                var dataList = db.Restaurants.ToList();
+                result = dataList.Select(x => DataToLibrary(x)).OrderByDescending(x => x.AverageRating).ToList();
+            }
+            return result;
+        }
+
+        public IEnumerable<Restaurant> GetTop3RestaurantsByRating()
+        {
+            IEnumerable<Restaurant> result;
+            using (var db = new RestaurantReviewsEntities())
+            {
+                var dataList = db.Restaurants.ToList();
+                result = dataList.Select(x => DataToLibrary(x)).OrderByDescending(x => x.AverageRating).Take(3).ToList();
+            }
+            return result;
+        }
+
+        public Restaurant GetDetails(string a)
+        {
+            Restaurant result;
+            using (var db = new RestaurantReviewsEntities())
+            {
+                var rest = db.Restaurants.SingleOrDefault(x => x.name == a);
+                result = DataToLibrary(rest);
+                return result;
+            }
+        }
+
         public IEnumerable<Review> GetReviews(string a)
         {
-            //IEnumerable<Restaurant> result;
             IEnumerable<Review> result;
             using (var db = new RestaurantReviewsEntities())
             {
-                var rest = db.Restaurants.Where(x => x.name == a);
-                var rev = rest.First().Reviews.ToList();
+                var rest = db.Restaurants.SingleOrDefault(x => x.name == a);
+                var rev = rest.Reviews.ToList();
                 result = rev.Select(x => DataToLibrary(x)).ToList();
                 return result;
-                //var dataList = db.Restaurants.ToList();
-                //result = dataList.Select(x.
-                        
             }
         }
 
@@ -68,9 +97,13 @@ namespace RestaurantReviewsLibrary.Models
             using (var db = new RestaurantReviewsEntities())
             {
                 var rest = db.Restaurants.SingleOrDefault(x => x.name == name);
+                int id = rest.id;
                 if (rest != null)
+                {
+                    db.Reviews.RemoveRange(db.Reviews.Where(x => x.restaurantid == id));
                     db.Restaurants.Remove(rest);
-                db.SaveChanges();
+                    db.SaveChanges();
+                }
             }
         }
 
@@ -80,8 +113,10 @@ namespace RestaurantReviewsLibrary.Models
             {
                 var rest = db.Restaurants.SingleOrDefault(x => x.name == name);
                 if (rest != null)
+                {
                     rest.name = update;
-                db.SaveChanges();
+                    db.SaveChanges();
+                }
             }
         }
 
@@ -98,12 +133,21 @@ namespace RestaurantReviewsLibrary.Models
 
         public static Restaurant DataToLibrary(RestaurantReviewsData.Restaurant dataModel)
         {
+            double rating = 0;
+            using (var db = new RestaurantReviewsEntities())
+            {
+                var reviews = db.Reviews.Where(r => r.restaurantid == dataModel.id);
+                if (reviews.Count() != 0)
+                    rating = reviews.Average(r => r.rating);
+            }
+
             var libModel = new Restaurant()
             {
                 ID = dataModel.id,
                 Name = dataModel.name,
                 Address = dataModel.address,
                 Phone = dataModel.phone,
+                AverageRating = rating
                 //reviews = (List<Review>) dataModel.Reviews
             };
             return libModel;
