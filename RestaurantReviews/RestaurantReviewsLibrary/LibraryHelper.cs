@@ -59,8 +59,12 @@ namespace RestaurantReviewsLibrary.Models
             using (var db = new RestaurantReviewsEntities())
             {
                 var rest = db.Restaurants.SingleOrDefault(x => x.name == a);
-                result = DataToLibrary(rest);
-                return result;
+                if (rest != null)
+                {
+                    result = DataToLibrary(rest);
+                    return result;
+                }
+                return null;
             }
         }
 
@@ -70,9 +74,13 @@ namespace RestaurantReviewsLibrary.Models
             using (var db = new RestaurantReviewsEntities())
             {
                 var rest = db.Restaurants.SingleOrDefault(x => x.name == a);
-                var rev = rest.Reviews.ToList();
-                result = rev.Select(x => DataToLibrary(x)).ToList();
-                return result;
+                if (rest != null)
+                {
+                    var rev = rest.Reviews.ToList();
+                    result = rev.Select(x => DataToLibrary(x)).ToList();
+                    return result;
+                }
+                return null;
             }
         }
 
@@ -97,18 +105,21 @@ namespace RestaurantReviewsLibrary.Models
             using (var db = new RestaurantReviewsEntities())
             {
                 var rest = db.Restaurants.SingleOrDefault(x => x.name == restname);
-                var rev = new Review()
+                if (rest != null)
                 {
-                    Rating = rating,
-                    review = comment,
-                    user = user,
-                    date = DateTime.Now
-                };
-                var datarev = LibraryToData(rev);
-                datarev.Restaurant = rest;
-                datarev.restaurantid = rest.id;
-                db.Reviews.Add(datarev);
-                db.SaveChanges();
+                    var rev = new Review()
+                    {
+                        Rating = rating,
+                        review = comment,
+                        user = user,
+                        date = DateTime.Now
+                    };
+                    var datarev = LibraryToData(rev);
+                    datarev.Restaurant = rest;
+                    datarev.restaurantid = rest.id;
+                    db.Reviews.Add(datarev);
+                    db.SaveChanges();
+                }
             }
         }
 
@@ -117,9 +128,9 @@ namespace RestaurantReviewsLibrary.Models
             using (var db = new RestaurantReviewsEntities())
             {
                 var rest = db.Restaurants.SingleOrDefault(x => x.name == name);
-                int id = rest.id;
                 if (rest != null)
                 {
+                    int id = rest.id;
                     db.Reviews.RemoveRange(db.Reviews.Where(x => x.restaurantid == id));
                     db.Restaurants.Remove(rest);
                     db.SaveChanges();
