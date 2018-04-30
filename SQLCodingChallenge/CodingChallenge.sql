@@ -42,7 +42,7 @@ INNER JOIN Inventory.[Order] ON Inventory.Customer.id = Inventory.[Order].custom
 INNER JOIN Inventory.Product ON Inventory.[Order].productid = Inventory.Product.id
 where firstName = 'Tina' and lastName = 'Smith'
 
-SELECT Inventory.Customer.firstName, Inventory.Customer.lastName, Inventory.Product.[name]
+SELECT Sum(Inventory.Product.price)
 FROM Inventory.Customer
 INNER JOIN Inventory.[Order] ON Inventory.Customer.id = Inventory.[Order].customerid
 INNER JOIN Inventory.Product ON Inventory.[Order].productid = Inventory.Product.id
