@@ -22,7 +22,7 @@ namespace RestaurantReviewsClient
             Console.WriteLine("Name                Rating");
             Console.WriteLine("--------------------------");
             foreach (var restuarant in results)
-                Console.WriteLine(restuarant.Name + " ".PadLeft(20 - restuarant.Name.Length, ' ') + restuarant.AverageRating);
+                Console.WriteLine(restuarant.Name + " ".PadLeft(20 - restuarant.Name.Length, ' ') + restuarant.AverageRating.ToString("0.##"));
             Console.WriteLine();
         }
         public void GetRestaurantsByRating()
@@ -31,7 +31,7 @@ namespace RestaurantReviewsClient
             Console.WriteLine("Name                Rating");
             Console.WriteLine("--------------------------");
             foreach (var restuarant in results)
-                Console.WriteLine(restuarant.Name + " ".PadLeft(20 - restuarant.Name.Length, ' ') + restuarant.AverageRating);
+                Console.WriteLine(restuarant.Name + " ".PadLeft(20 - restuarant.Name.Length, ' ') + restuarant.AverageRating.ToString("0.##"));
             Console.WriteLine();
         }
         public void GetDetails(string name)

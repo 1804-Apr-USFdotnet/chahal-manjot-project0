@@ -5,18 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using RestaurantReviewsLibrary;
 using RestaurantReviewsLibrary.Models;
+using NLog;
 
 namespace RestaurantReviewsClient
 {
     class Client
     {
+        public static Logger logger;
         static void Main(string[] args)
         {
-            ReadInput("");
+            var config = new NLog.Config.LoggingConfiguration();
+            var logfile = new NLog.Targets.FileTarget() { FileName = "inputlog.txt", Name = "logfile" };
+            config.LoggingRules.Add(new NLog.Config.LoggingRule("*", LogLevel.Info, logfile));
+            NLog.LogManager.Configuration = config;
+            logger = NLog.LogManager.GetCurrentClassLogger();
+            ReadInput("", logger);
             Console.Read();
         }
 
-        public static void ReadInput(string response)
+        public static void ReadInput(string response, Logger logger)
         {
             ClientHelper helper = new ClientHelper();
 
@@ -36,12 +43,13 @@ namespace RestaurantReviewsClient
                 Console.WriteLine("Remove a review (11)");
 
                 response = Console.ReadLine();
-                Execute(response, helper);
+                logger.Info(response);
+                Execute(response, helper, logger);
             }
             Environment.Exit(1);
         }
 
-        private static void Execute(string response, ClientHelper helper)
+        private static void Execute(string response, ClientHelper helper, Logger logger)
         {
             switch (response)
             {
@@ -57,12 +65,14 @@ namespace RestaurantReviewsClient
                     Console.WriteLine();
                     Console.WriteLine("Enter the name of the restaurant you would like details for:");
                     string name = Console.ReadLine();
+                    logger.Info(name);
                     helper.GetDetails(name);
                     break;
                 case "4":
                     Console.WriteLine();
                     Console.WriteLine("Enter the name of the restaurant you would like reviews for:");
                     string namerev = Console.ReadLine();
+                    logger.Info(namerev);
                     helper.GetReviews(namerev);
                     break;
                 case "5":
@@ -73,60 +83,74 @@ namespace RestaurantReviewsClient
                     Console.WriteLine();
                     Console.WriteLine("Enter the phrase you would like to search for:");
                     string search = Console.ReadLine();
+                    logger.Info(search);
                     helper.Search(search);
                     break;
                 case "7":
                     Console.WriteLine();
                     Console.WriteLine("Enter the name of the restaurant you would like to add:");
                     string restname = Console.ReadLine();
+                    logger.Info(restname);
                     Console.WriteLine("Enter restaurant address:");
                     string restaddress = Console.ReadLine();
+                    logger.Info(restaddress);
                     Console.WriteLine("Enter restaurant phone:");
                     string restphone = Console.ReadLine();
+                    logger.Info(restphone);
                     helper.AddRestaurant(restname,restaddress,restphone);
                     break;
                 case "8":
                     Console.WriteLine();
                     Console.WriteLine("Enter the current restaurant name:");
                     string restnameup = Console.ReadLine();
+                    logger.Info(restnameup);
                     Console.WriteLine("Enter new restaurant name:");
                     string restnamenew = Console.ReadLine();
+                    logger.Info(restnamenew);
                     helper.UpdateRestaurant(restnameup, restnamenew);
                     break;
                 case "9":
                     Console.WriteLine();
                     Console.WriteLine("Enter the name of restaurant you would like to remove:");
                     string restdel = Console.ReadLine();
+                    logger.Info(restdel);
                     helper.RemoveRestaurant(restdel);
                     break;
                 case "10":
                     Console.WriteLine();
                     Console.WriteLine("Enter the name of the restaurant you would like to add a review for:");
                     string restnamerev = Console.ReadLine();
+                    logger.Info(restnamerev);
                     Console.WriteLine("Enter rating:");
                     int rating = Convert.ToInt32(Console.ReadLine());
+                    logger.Info(rating);
                     Console.WriteLine("Enter comment:");
                     string comment = Console.ReadLine();
+                    logger.Info(comment);
                     Console.WriteLine("Enter your username:");
                     string uname = Console.ReadLine();
+                    logger.Info(uname);
                     helper.AddReview(restnamerev,rating,comment,uname);
                     break;
                 case "11":
                     Console.WriteLine();
                     Console.WriteLine("Enter the name of the restaurant you would like to remove a review for:");
                     string restnamerevdel = Console.ReadLine();
+                    logger.Info(restnamerevdel);
                     Console.WriteLine("Enter your username:");
                     string unamedel = Console.ReadLine();
+                    logger.Info(unamedel);
                     Console.WriteLine("Enter rating given:");
                     int ratingdel = Convert.ToInt32(Console.ReadLine());
+                    logger.Info(ratingdel);
                     helper.RemoveReview(restnamerevdel,unamedel,ratingdel);
                     break;
                 case "stop":
-                    ReadInput(response);
+                    ReadInput(response, logger);
                     break;
                 default:
                     Console.WriteLine("Unrecognized input. Enter a valid option\n");
-                    ReadInput(response);
+                    ReadInput(response, logger);
                     break;
             }
         }
