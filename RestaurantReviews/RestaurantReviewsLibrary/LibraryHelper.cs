@@ -92,6 +92,26 @@ namespace RestaurantReviewsLibrary.Models
             }
         }
 
+        public void AddReview(string restname, int rating, string comment, string user)
+        {
+            using (var db = new RestaurantReviewsEntities())
+            {
+                var rest = db.Restaurants.SingleOrDefault(x => x.name == restname);
+                var rev = new Review()
+                {
+                    Rating = rating,
+                    review = comment,
+                    user = user,
+                    date = DateTime.Now
+                };
+                var datarev = LibraryToData(rev);
+                datarev.Restaurant = rest;
+                datarev.restaurantid = rest.id;
+                db.Reviews.Add(datarev);
+                db.SaveChanges();
+            }
+        }
+
         public void RemoveRestaurant(string name)
         {
             using (var db = new RestaurantReviewsEntities())
@@ -102,6 +122,21 @@ namespace RestaurantReviewsLibrary.Models
                 {
                     db.Reviews.RemoveRange(db.Reviews.Where(x => x.restaurantid == id));
                     db.Restaurants.Remove(rest);
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        public void RemoveReview(string restname, string user, int rating)
+        {
+            using (var db = new RestaurantReviewsEntities())
+            {
+                var rest = db.Restaurants.SingleOrDefault(x => x.name == restname);
+                int id = rest.id;
+                var rev = db.Reviews.SingleOrDefault(x => x.user == user && x.rating == rating && x.restaurantid == id);
+                if (rev != null)
+                {
+                    db.Reviews.Remove(rev);
                     db.SaveChanges();
                 }
             }
@@ -176,6 +211,18 @@ namespace RestaurantReviewsLibrary.Models
                 Restaurantid = dataModel.restaurantid
             };
             return libModel;
+        }
+
+        public static RestaurantReviewsData.Review LibraryToData(Review libModel)
+        {
+            var dataModel = new RestaurantReviewsData.Review()
+            {
+                rating = libModel.Rating,
+                review = libModel.review,
+                user = libModel.user,
+                date = libModel.date
+            };
+            return dataModel;
         }
     }
 }

@@ -55,9 +55,24 @@ namespace RestaurantReviewsClient
                 Console.WriteLine(restuarant.GetRestaurantInfo()+"\n");
             Console.WriteLine();
 
-            var results3 = libHelper.GetDetails("Subway");
+            var results3 = libHelper.GetDetails("Chipotle");
             Console.WriteLine("Details:");
             Console.WriteLine(results3.GetRestaurantInfo());
+            Console.WriteLine();
+
+            //libHelper.AddReview("Chipotle", 2, "This place still sucks", "Gordon Ramsay");
+            libHelper.RemoveReview("Chipotle", "Gordon Ramsey", 1);
+
+            results3 = libHelper.GetDetails("Chipotle");
+            Console.WriteLine("Details:");
+            Console.WriteLine(results3.GetRestaurantInfo());
+            Console.WriteLine();
+
+            var results2 = libHelper.GetReviews("Chipotle");
+            Console.WriteLine("Reviews:");
+            foreach (var review in results2)
+                Console.WriteLine(review.GetReview());
+            Console.WriteLine();
 
             //results = libHelper.GetRestaurants();
             //foreach (var restuarant in results)
