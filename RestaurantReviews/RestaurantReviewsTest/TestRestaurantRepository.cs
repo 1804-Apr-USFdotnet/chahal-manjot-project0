@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.Linq;
 using RestaurantReviewsData;
 using Restaurant = RestaurantReviewsData.Restaurant;
+using Review = RestaurantReviewsData.Review;
 
 namespace RestaurantReviewsTest
 {
@@ -17,7 +18,7 @@ namespace RestaurantReviewsTest
         //[TestMethod]
         //public void GetRestaurantsByName()
         //{
-        //    mockRepo.Setup(x => x.GetRestaurantsAlphabetical()).Returns(rests.ToString);
+        //    mockRepo.Setup(x => x.GetRestaurantsAlphabetical()).Returns(rests.ToString());
         //    mockRepo.Object.GetRestaurantsAlphabetical();
         //}
 
@@ -35,21 +36,6 @@ namespace RestaurantReviewsTest
             mockSet.Verify(m => m.Add(It.IsAny<Restaurant>()), Times.Once());
             mockContext.Verify(m => m.SaveChanges(), Times.Once());
         }
-
-        //[TestMethod]
-        //public void AddReview()
-        //{
-        //    var mockSet = new Mock<DbSet<RestaurantReviewsData.Review>>();
-
-        //    var mockContext = new Mock<RestaurantReviewsEntities>();
-        //    mockContext.Setup(m => m.Reviews).Returns(mockSet.Object);
-
-        //    var service = new RestaurantRepository(mockContext.Object);
-        //    service.AddReview("Subway",5,"Ok","Bob2");
-
-        //    mockSet.Verify(m => m.Add(It.IsAny<RestaurantReviewsData.Review>()), Times.Once());
-        //    mockContext.Verify(m => m.SaveChanges(), Times.Once());
-        //}
 
         [TestMethod]
         public void GetRestaurantsByName()
@@ -71,7 +57,6 @@ namespace RestaurantReviewsTest
             mockContext.Setup(c => c.Restaurants).Returns(mockSet.Object);
 
             var service = new RestaurantRepository(mockContext.Object);
-            //service.AddRestaurant("Subway", "123 That Way", "1233453423");
             var rests = service.GetRestaurantsAlphabetical();
 
             //mockSet.Verify(m => m.Add(It.IsAny<Restaurant>()), Times.Once());
@@ -80,6 +65,64 @@ namespace RestaurantReviewsTest
             Assert.AreEqual("Qdoba", rests.ElementAt(0).Name);
             Assert.AreEqual("Subway", rests.ElementAt(1).Name);
             Assert.AreEqual("Wingstop", rests.ElementAt(2).Name);
+        }
+
+        [TestMethod]
+        public void GetRestaurantDetails()
+        {
+            var data = new List<Restaurant>
+            {
+                new Restaurant {name = "Subway", address = "123 Revature Street", phone = "1234561234"},
+                new Restaurant {name = "Qdoba"},
+                new Restaurant {name = "Wingstop"}
+            }.AsQueryable();
+
+            var mockSet = new Mock<DbSet<RestaurantReviewsData.Restaurant>>();
+            mockSet.As<IQueryable<Restaurant>>().Setup(m => m.Provider).Returns(data.Provider);
+            mockSet.As<IQueryable<Restaurant>>().Setup(m => m.Expression).Returns(data.Expression);
+            mockSet.As<IQueryable<Restaurant>>().Setup(m => m.ElementType).Returns(data.ElementType);
+            mockSet.As<IQueryable<Restaurant>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
+
+            var mockContext = new Mock<RestaurantReviewsEntities>();
+            mockContext.Setup(c => c.Restaurants).Returns(mockSet.Object);
+
+            var service = new RestaurantRepository(mockContext.Object);
+            var rest = service.GetDetails("Subway");
+
+            //mockSet.Verify(m => m.Add(It.IsAny<Restaurant>()), Times.Once());
+            //mockContext.Verify(m => m.SaveChanges(), Times.Once());
+            Assert.AreEqual("Subway", rest.Name);
+            Assert.AreEqual("123 Revature Street", rest.Address);
+            Assert.AreEqual("1234561234", rest.Phone);
+        }
+
+        [TestMethod]
+        public void GetRestaurantReviews()
+        {
+            var data = new List<Restaurant>
+            {
+                new Restaurant {name = "Subway", Reviews = new List<Review>(){new Review(){rating = 5, review = "Ok", user="newguy"}}},
+                new Restaurant {name = "Qdoba"},
+                new Restaurant {name = "Wingstop"}
+            }.AsQueryable();
+
+            var mockSet = new Mock<DbSet<RestaurantReviewsData.Restaurant>>();
+            mockSet.As<IQueryable<Restaurant>>().Setup(m => m.Provider).Returns(data.Provider);
+            mockSet.As<IQueryable<Restaurant>>().Setup(m => m.Expression).Returns(data.Expression);
+            mockSet.As<IQueryable<Restaurant>>().Setup(m => m.ElementType).Returns(data.ElementType);
+            mockSet.As<IQueryable<Restaurant>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
+
+            var mockContext = new Mock<RestaurantReviewsEntities>();
+            mockContext.Setup(c => c.Restaurants).Returns(mockSet.Object);
+
+            var service = new RestaurantRepository(mockContext.Object);
+            var rev = service.GetReviews("Subway");
+
+            //mockSet.Verify(m => m.Add(It.IsAny<Restaurant>()), Times.Once());
+            //mockContext.Verify(m => m.SaveChanges(), Times.Once());
+            Assert.AreEqual(5, rev.ElementAt(0).Rating);
+            Assert.AreEqual("Ok", rev.ElementAt(0).review);
+            Assert.AreEqual("newguy", rev.ElementAt(0).user);
         }
 
     }
