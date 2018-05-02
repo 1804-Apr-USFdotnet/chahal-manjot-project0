@@ -42,14 +42,6 @@ namespace RestaurantReviewsLibrary
             reviewCount++;
         }
 
-        //public void addReview(String reviewer, String review, int rating, String date)
-        //{
-        //    //reviews[reviewCount] = new Review(reviewer, review, rating, date);
-        //    reviews.Add(new Review(reviewer, review, rating, date));
-        //    averageRating = (averageRating * reviewCount + rating) / (reviewCount + 1);
-        //    reviewCount++;
-        //}
-
         public string SearchInfo()
         {
             //string a = $"{id}\n{Name}\n{address}\n{phone}\n{AverageRating}";

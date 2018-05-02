@@ -1,4 +1,4 @@
-﻿using RestaurantReviewsLibrary.Models;
+﻿using RestaurantReviewsLibrary.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +9,18 @@ namespace RestaurantReviewsClient
 {
     public class ClientHelper
     {
-        public LibraryHelper libHelper;
+        //public LibraryHelper repo;
+        public RestaurantRepository repo;
 
         public ClientHelper()
         {
-            libHelper = new LibraryHelper();
+            //repo = new LibraryHelper();
+            repo = new RestaurantRepository();
         }
 
         public void GetRestaurantsByName()
         {
-            var results = libHelper.GetRestaurantsAlphabetical();
+            var results = repo.GetRestaurantsAlphabetical();
             Console.WriteLine("Name                Rating");
             Console.WriteLine("--------------------------");
             foreach (var restuarant in results)
@@ -27,7 +29,7 @@ namespace RestaurantReviewsClient
         }
         public void GetRestaurantsByRating()
         {
-            var results = libHelper.GetRestaurantsByRating();
+            var results = repo.GetRestaurantsByRating();
             Console.WriteLine("Name                Rating");
             Console.WriteLine("--------------------------");
             foreach (var restuarant in results)
@@ -36,7 +38,7 @@ namespace RestaurantReviewsClient
         }
         public void GetDetails(string name)
         {
-            var results = libHelper.GetDetails(name);
+            var results = repo.GetDetails(name);
             if (results != null)
             {
                 Console.WriteLine("Details:");
@@ -48,7 +50,7 @@ namespace RestaurantReviewsClient
         }
         public void GetReviews(string name)
         {
-            var results = libHelper.GetReviews(name);
+            var results = repo.GetReviews(name);
             if (results != null)
             {
                 Console.WriteLine($"Reviews of {name}:");
@@ -61,14 +63,14 @@ namespace RestaurantReviewsClient
         }
         public void GetTop3()
         {
-            var results = libHelper.GetTop3RestaurantsByRating();
+            var results = repo.GetTop3RestaurantsByRating();
             Console.WriteLine("Top 3 rated restaurants:");
             foreach (var restuarant in results)
                 Console.WriteLine(restuarant.GetRestaurantInfo() + "\n");
         }
         public void Search(string search)
         {
-            var results = libHelper.Search(search);
+            var results = repo.Search(search);
             Console.WriteLine($"Search results for \"{search}\":");
             foreach (var restuarant in results)
                 Console.WriteLine(restuarant.GetRestaurantInfo());
@@ -76,23 +78,23 @@ namespace RestaurantReviewsClient
         }
         public void AddRestaurant(string name, string address, string phone)
         {
-            libHelper.AddRestaurant(name, address, phone);
+            repo.AddRestaurant(name, address, phone);
         }
         public void UpdateRestaurant(string name, string newName)
         {
-            libHelper.UpdateRestaurant(name, newName);
+            repo.UpdateRestaurant(name, newName);
         }
         public void RemoveRestaurant(string name)
         {
-            libHelper.RemoveRestaurant(name);
+            repo.RemoveRestaurant(name);
         }
         public void AddReview(string name, int rating, string review, string user)
         {
-            libHelper.AddReview(name, rating, review, user);
+            repo.AddReview(name, rating, review, user);
         }
         public void RemoveReview(string name, string user, int rating)
         {
-            libHelper.RemoveReview(name, user, rating);
+            repo.RemoveReview(name, user, rating);
         }
     }
 }

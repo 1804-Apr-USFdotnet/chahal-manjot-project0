@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RestaurantReviewsLibrary;
-using RestaurantReviewsLibrary.Models;
 using NLog;
 
 namespace RestaurantReviewsClient
@@ -12,12 +11,9 @@ namespace RestaurantReviewsClient
     class Client
     {
         public static Logger logger;
+
         static void Main(string[] args)
         {
-            var config = new NLog.Config.LoggingConfiguration();
-            var logfile = new NLog.Targets.FileTarget() { FileName = "inputlog.txt", Name = "logfile" };
-            config.LoggingRules.Add(new NLog.Config.LoggingRule("*", LogLevel.Info, logfile));
-            NLog.LogManager.Configuration = config;
             logger = NLog.LogManager.GetCurrentClassLogger();
             ReadInput("", logger);
             Console.Read();
